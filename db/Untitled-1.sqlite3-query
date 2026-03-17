@@ -1,0 +1,16 @@
+-- database: ./todo.db
+
+-- Чтобы выполнить весь файл, нажмите кнопку ▷ в правом верхнем углу окна.
+
+SELECT * FROM tasks;
+
+INSERT INTO tasks (task) VALUES ('Погулять');
+
+UPDATE tasks SET task = 'Поучиться' WHERE id = 5;
+
+UPDATE tasks SET task = 'Купить цветы';
+
+DELETE FROM tasks;
+
+
+ALTER TABLE tasks ADD COLUMN completed INTEGER DEFAULT 0; 
