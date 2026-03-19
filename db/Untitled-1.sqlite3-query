@@ -13,4 +13,9 @@ UPDATE tasks SET task = 'Купить цветы';
 DELETE FROM tasks;
 
 
+
 ALTER TABLE tasks ADD COLUMN completed INTEGER DEFAULT 0; 
+
+SELECT * FROM sqlite_sequence;
+
+DELETE FROM sqlite_sequence WHERE name = "task"

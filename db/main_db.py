@@ -3,22 +3,35 @@ from db import queries
 from config import path_db
 
 
-def init_db():
-    conn = sqlite3.connect(path_db)
-    cursor = conn.cursor()
-    cursor.execute(queries.task_table)
-    print('БД подключена!')
-    conn.commit()
-    conn.close()
+# def init_db():
+#     conn = sqlite3.connect(path_db)
+#     cursor = conn.cursor()
+#     cursor.execute(queries.task_table)
+#     print('БД подключена!')
+#     conn.commit()
+#     conn.close()
 
+def init_db():
+    with sqlite3.connect(path_db) as conn:
+        cursor = conn.cursor()
+        cursor.execute(queries.task_table)
+    print('БД подключена!')
+
+
+# def add_task(task):
+#     conn = sqlite3.connect(path_db)
+#     cursor = conn.cursor()
+#     cursor.execute(queries.insert_task, (task, ))
+#     conn.commit()
+#     task_id = cursor.lastrowid 
+#     conn.close()
+#     return task_id
 
 def add_task(task):
-    conn = sqlite3.connect(path_db)
-    cursor = conn.cursor()
-    cursor.execute(queries.insert_task, (task, ))
-    conn.commit()
-    task_id = cursor.lastrowid 
-    conn.close()
+    with sqlite3.connect(path_db) as conn:
+        cursor = conn.cursor()
+        cursor.execute(queries.insert_task, (task, ))
+        task_id = cursor.lastrowid 
     return task_id
 
 
