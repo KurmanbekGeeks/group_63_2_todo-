@@ -8,6 +8,14 @@ def main(page: ft.Page):
 
     task_list = ft.Column(spacing=20)
 
+    filter_type = 'all'
+
+    def load_task():
+        task_list.controls.clear()
+        for task_id, task, completed in main_db.get_tasks(filter_type=filter_type):
+            task_list.controls.append(view_tasks(task_id=task_id, task_text=task, completed=completed))
+            page.update()
+
     def view_tasks(task_id, task_text, completed=None):
         task_field = ft.TextField(value=task_text, read_only=True, expand=True)
 
@@ -51,12 +59,27 @@ def main(page: ft.Page):
             page.update()
 
 
+
     task_input = ft.TextField(label='Введите задачу', expand=True, on_submit=add_task_db)
     send_button = ft.ElevatedButton('SEND', on_click=add_task_db)
 
     main_objects = ft.Row([task_input, send_button])
 
-    page.add(main_objects, task_list)
+    def set_filter(filter_value):
+        nonlocal filter_type
+        filter_type = filter_value
+        print(filter_type)
+        load_task()
+
+
+    filter_buttons = ft.Row([
+        ft.ElevatedButton("Все задачи", on_click=lambda e: set_filter('all')),
+        ft.ElevatedButton('В работе', on_click=lambda e: set_filter('uncompleted')),
+        ft.ElevatedButton("Готово ✅", on_click=lambda e: set_filter('completed'))
+    ], alignment=ft.MainAxisAlignment.SPACE_EVENLY)
+
+    page.add(main_objects, filter_buttons, task_list)
+    load_task()
 
 
 if __name__ == '__main__':

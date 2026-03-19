@@ -33,3 +33,19 @@ def update_task(task_id, new_task=None, completed=None):
 
     conn.commit()
     conn.close()
+
+# all - completed - uncompleted
+def get_tasks(filter_type):
+    conn = sqlite3.connect(path_db)
+    cursor = conn.cursor()
+
+    if filter_type == 'all':
+        cursor.execute(queries.select_task)
+    elif filter_type == 'completed':
+        cursor.execute(queries.select_task_completed)
+    elif filter_type == 'uncompleted':
+        cursor.execute(queries.select_task_uncompleted)
+
+    tasks = cursor.fetchall()
+    conn.close()
+    return tasks 
